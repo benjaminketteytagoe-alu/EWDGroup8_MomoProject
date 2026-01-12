@@ -2,7 +2,7 @@
 A team project SMS Momo project
 
 **Project Structure**
-.
+```.
 ├── README.md                         # Setup, run, overview
 ├── .env.example                      # DATABASE_URL or path to SQLite
 ├── requirements.txt                  # lxml/ElementTree, dateutil, (FastAPI optional)
@@ -42,7 +42,7 @@ A team project SMS Momo project
     ├── test_clean_normalize.py
     └── test_categorize.py
 
-
+```
 
 
 
