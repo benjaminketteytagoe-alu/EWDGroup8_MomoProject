@@ -50,7 +50,7 @@ The project architecture diagram design can be accessed through this link: [Miro
     └── test_categorize.py
 ```
 
-
+```
 
 
 
@@ -72,6 +72,9 @@ The project architecture diagram design can be accessed through this link: [Miro
 **NOTE:**
 Since the project roadmap is structured into weeks, every team member works on every part of the project, depending on what we have for that week. This is to ensure even growth and understanding of the various parts of software development among our members. The roles are assigned to show who'll be leading us through each stage of the project.
 
+**Description**
+## This is a momo project
+A team project SMS Momo project
 
 ## Project Management
 [Trello Link](https://trello.com/invite/b/695fc3b3c63db147d018ef47/ATTI8ecd1b6d00c4415c80de14f330980be24B8DF08E/enterprise-momo-data-system)
