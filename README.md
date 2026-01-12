@@ -7,7 +7,7 @@ A team project SMS Momo project
 The project architecture diagram design can be accessed through this link: [Miro Architecture Board](https://miro.com/app/board/uXjVGS77-ss=/) 
 
 **Project Structure**
-.
+```.
 ├── README.md                         # Setup, run, overview
 ├── .env.example                      # DATABASE_URL or path to SQLite
 ├── requirements.txt                  # lxml/ElementTree, dateutil, (FastAPI optional)
@@ -46,6 +46,7 @@ The project architecture diagram design can be accessed through this link: [Miro
     ├── test_parse_xml.py             # Small unit tests
     ├── test_clean_normalize.py
     └── test_categorize.py
+```
 
 
 
