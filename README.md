@@ -1,6 +1,6 @@
 # EWDGroup8_MomoProject
 
-## About The Momo Project
+## The Momo Project Description
 The Momo SMS is a full-stack mobile money solution designed to provide accessible financial services to users through USSD and SMS interfaces. Built with modern technologies(Frontend: HTML, CSS and JavaScript, Backend and Servers: flask, ngnix,RESTful-API, JSON file structure, CI/CD: git and Github) and following industry best practices, the platform enables users to perform a wide range of financial transactions. This project was carried out by [Team Members]()
 
 
