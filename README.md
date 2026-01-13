@@ -67,8 +67,12 @@ The project architecture diagram design can be accessed through this link: [Miro
 Since the project roadmap is structured into weeks, every team member works on every part of the project, depending on what we have for that week. This is to ensure even growth and understanding of the various parts of software development among our members. The roles are assigned to show who'll be leading us through each stage of the project.
 
 
-## Project Management
-[Trello Link](https://trello.com/invite/b/695fc3b3c63db147d018ef47/ATTI8ecd1b6d00c4415c80de14f330980be24B8DF08E/enterprise-momo-data-system)
+## Scrum Board Set-up
+[Trello Link](https://trello.com/b/ayd4HWIa/enterprise-momo-data-system)
 
 **NOTE**
 The project is still in its early stages, and we will continue to create and distribute tasks.
+
+## MIT License 
+
+This project is under MIT license.
