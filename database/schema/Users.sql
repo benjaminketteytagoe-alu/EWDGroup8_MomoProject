@@ -12,9 +12,11 @@ create table momo_erd.Users
         unique (phone_number)
 );
 
+
 create index idx_account_status
     on momo_erd.Users (account_status);
 
 create index idx_phone_number
     on momo_erd.Users (phone_number);
+
 
