@@ -1,4 +1,3 @@
-
 CREATE TABLE Transaction_Category (
     category_id INT PRIMARY KEY AUTO_INCREMENT,
     category_name VARCHAR(100) NOT NULL, -- e.g., 'sending p2p'
