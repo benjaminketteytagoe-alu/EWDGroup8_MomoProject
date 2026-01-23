@@ -19,3 +19,8 @@ ADD INDEX idx_phone_number (phone_number);
 
 ALTER TABLE Users
 ADD INDEX idx_account_status (account_status);
+
+
+ALTER TABLE Users ADD COLUMN username varchar(255) UNIQUE NOT NULL ;
+ALTER TABLE Users ADD COLUMN email varchar(255) UNIQUE NOT NULL ;
+ALTER TABLE momo_erd.Users ADD COLUMN password varchar(255) NOT NULL;
