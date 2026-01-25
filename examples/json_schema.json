@@ -1,0 +1,73 @@
+[
+  {
+    "user": {
+      "description": "A user registered on our application",
+      "example": {
+        "userId": 101,
+        "fullName": "Eelaf Adam",
+        "contact": {
+          "email": "e.adam@gmail.com",
+          "phoneNumber": "0788999888"
+        },
+        "setPin": true,
+        "createdAt": "2026-01-20T10:00:00Z",
+        "updatedAt": "2026-01-25T14:30:00Z"
+      }
+    },
+    "transactionCategory": {
+      "description": "A transaction type in the standard transaction types",
+      "example": {
+        "categoryId": 3,
+        "categoryName": "Merchant Payment",
+        "parentGroup": "Payments",
+        "description": "Payment to registered merchant",
+        "createdAt": "2026-01-10T00:00:00Z"
+      }
+    },
+    "transaction": {
+      "description": "THis shows a single momo transaction retrieved from the xml file",
+      "example": {
+        "transactionId": 500,
+        "userId": 101,
+        "categoryId": 3,
+        "transactionReference": "TXN76662021",
+        "partyName": "Kigali Bakery",
+        "financials": {
+          "amount": 1500.0,
+          "fee": 0.0,
+          "balanceBefore": 12500.0,
+          "balanceAfter": 11000.0
+        },
+        "transactionDate": "2026-01-25T18:45:00Z",
+        "createdAt": "2026-01-25T18:45:30Z"
+      }
+    },
+    "generatedStatement": {
+      "description": "THis represents the pdf statement requests made by the user",
+      "example": {
+        "statementId": 12,
+        "userId": 101,
+        "requestPeriod": {
+          "start": "2026-01-01",
+          "end": "2026-01-31"
+        },
+        "summary": {
+          "totalTransactions": 45,
+          "totalInflow": 150000.0,
+          "totalOutflow": 144000.0
+        },
+        "generatedAt": "2026-01-25T19:00:00Z"
+      }
+    },
+    "systemLog": {
+      "description": "log entry for the user's actions",
+      "example": {
+        "logId": 1523,
+        "userId": 101,
+        "actionType": "XML_UPLOAD",
+        "description": "User uploaded MoMo XML file",
+        "createdAt": "2026-01-25T14:30:00Z"
+      }
+    }
+  }
+]
