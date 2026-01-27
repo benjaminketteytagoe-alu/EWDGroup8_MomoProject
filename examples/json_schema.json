@@ -1,3 +1,153 @@
+
+{
+    "mappings": [
+        {
+            "jsonKey": "userId",
+            "sourceTable": "Users",
+            "sourceColumn": "user_id",
+            "transformationLogic": "Direct mapping (INT → number)"
+        },
+        {
+            "jsonKey": "fullName",
+            "sourceTable": "Users",
+            "sourceColumn": "full_name",
+            "transformationLogic": "Direct mapping (VARCHAR → string)"
+        },
+        {
+            "jsonKey": "contact.email",
+            "sourceTable": "Users",
+            "sourceColumn": "email",
+            "transformationLogic": "Nested in contact object (VARCHAR → string)"
+        },
+        {
+            "jsonKey": "contact.phoneNumber",
+            "sourceTable": "Users",
+            "sourceColumn": "phone_number",
+            "transformationLogic": "Nested in contact object (VARCHAR → string)"
+        },
+        {
+            "jsonKey": "setPin",
+            "sourceTable": "Users",
+            "sourceColumn": "pin",
+            "transformationLogic": "Boolean check: Returns true if PIN exists (CHAR → boolean)"
+        },
+        {
+            "jsonKey": "createdAt",
+            "sourceTable": "Users",
+            "sourceColumn": "created_at",
+            "transformationLogic": "TIMESTAMP → ISO 8601 string"
+        },
+        {
+            "jsonKey": "updatedAt",
+            "sourceTable": "Users",
+            "sourceColumn": "updated_at",
+            "transformationLogic": "TIMESTAMP → ISO 8601 string"
+        },
+        {
+            "jsonKey": "categoryId",
+            "sourceTable": "Transaction_Categories",
+            "sourceColumn": "category_id",
+            "transformationLogic": "Direct mapping (INT → number)"
+        },
+        {
+            "jsonKey": "categoryName",
+            "sourceTable": "Transaction_Categories",
+            "sourceColumn": "category_name",
+            "transformationLogic": "Direct mapping (VARCHAR → string)"
+        },
+        {
+            "jsonKey": "parentGroup",
+            "sourceTable": "Transaction_Categories",
+            "sourceColumn": "parent_group",
+            "transformationLogic": "ENUM → string"
+        },
+        {
+            "jsonKey": "transactionId",
+            "sourceTable": "Transactions",
+            "sourceColumn": "transaction_id",
+            "transformationLogic": "Direct mapping (INT → number)"
+        },
+        {
+            "jsonKey": "transactionReference",
+            "sourceTable": "Transactions",
+            "sourceColumn": "transaction_reference",
+            "transformationLogic": "Direct mapping (VARCHAR → string)"
+        },
+        {
+            "jsonKey": "partyName",
+            "sourceTable": "Transactions",
+            "sourceColumn": "party_name",
+            "transformationLogic": "Direct mapping (VARCHAR → string)"
+        },
+        {
+            "jsonKey": "financials.amount",
+            "sourceTable": "Transactions",
+            "sourceColumn": "amount",
+            "transformationLogic": "Nested in financials (DECIMAL → number, 2 decimals)"
+        },
+        {
+            "jsonKey": "financials.fee",
+            "sourceTable": "Transactions",
+            "sourceColumn": "fee",
+            "transformationLogic": "Nested in financials (DECIMAL → number, 2 decimals)"
+        },
+        {
+            "jsonKey": "financials.balanceBefore",
+            "sourceTable": "Transactions",
+            "sourceColumn": "balance_before",
+            "transformationLogic": "Nested in financials (DECIMAL → number, can be null)"
+        },
+        {
+            "jsonKey": "financials.balanceAfter",
+            "sourceTable": "Transactions",
+            "sourceColumn": "balance_after",
+            "transformationLogic": "Nested in financials (DECIMAL → number, 2 decimals)"
+        },
+        {
+            "jsonKey": "transactionDate",
+            "sourceTable": "Transactions",
+            "sourceColumn": "transaction_date",
+            "transformationLogic": "DATETIME → ISO 8601 string"
+        },
+        {
+            "jsonKey": "requestPeriod.start",
+            "sourceTable": "Generated_Statements",
+            "sourceColumn": "start_date",
+            "transformationLogic": "Nested in requestPeriod (DATE → YYYY-MM-DD string)"
+        },
+        {
+            "jsonKey": "requestPeriod.end",
+            "sourceTable": "Generated_Statements",
+            "sourceColumn": "end_date",
+            "transformationLogic": "Nested in requestPeriod (DATE → YYYY-MM-DD string)"
+        },
+        {
+            "jsonKey": "summary.totalTransactions",
+            "sourceTable": "Generated_Statements",
+            "sourceColumn": "total_transactions",
+            "transformationLogic": "Nested in summary (INT → number)"
+        },
+        {
+            "jsonKey": "summary.totalInflow",
+            "sourceTable": "Generated_Statements",
+            "sourceColumn": "total_inflow",
+            "transformationLogic": "Nested in summary (DECIMAL → number)"
+        },
+        {
+            "jsonKey": "summary.totalOutflow",
+            "sourceTable": "Generated_Statements",
+            "sourceColumn": "total_outflow",
+            "transformationLogic": "Nested in summary (DECIMAL → number)"
+        },
+        {
+            "jsonKey": "actionType",
+            "sourceTable": "System_Logs",
+            "sourceColumn": "action_type",
+            "transformationLogic": "Direct mapping (VARCHAR → string)"
+        }
+    ]
+}
+
 [
   {
     "user": {
