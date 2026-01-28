@@ -159,7 +159,7 @@ examples/json_schemas.json
 * Week 1 tasks completed and Week 2 tasks tracked
 * Clear ownership and sprint progression
 
-🔗 **Scrum Board Link:** *(https://trello.com/invite/b/695fc3b3c63db147d018ef47/ATTI26a9d472ebe028004d418899c959a84114D8CAA1/enterprise-momo-data-system)*
+🔗 **Scrum Board Link:** [Trello Link](https://trello.com/b/ayd4HWIa/enterprise-momo-data-system)
 
 ---
 
