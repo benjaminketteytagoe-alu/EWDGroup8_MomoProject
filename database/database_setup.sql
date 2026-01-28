@@ -1,9 +1,9 @@
 -- Database: MomoProject
 -- This script sets up the database schema for the MomoProject application.
 -- It includes tables for the core entities such as Users, Transaction Categories, Transactions, and System logs.
--- Additionaly it also include other entities such as Accounts, Merchants, Fees, Transaction Statements, and Transaction Limits.
+-- Additionally, it also includes other entities such as Accounts, Merchants, Fees, Transaction Statements, and Transaction Limits.
 -- Each entity has appropriate comments, constraints and indexes.
--- Also it has basic CRUD operations for each table.
+-- Also, it has basic CRUD operations for each table.
 -- Users table
 
 CREATE TABLE Users (
