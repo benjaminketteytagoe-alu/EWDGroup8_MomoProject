@@ -1,7 +1,0 @@
-ALTER TABLE Users ADD COLUMN username varchar(255) UNIQUE NOT NULL ;
-ALTER TABLE Users ADD COLUMN email varchar(255) UNIQUE NOT NULL ;
-ALTER TABLE Users ADD COLUMN password varchar(255) NOT NULL;
-
-ALTER TABLE Users DROP COLUMN momo_pin;
-ALTER TABLE Users DROP COLUMN account_status;
-ALTER TABLE Users DROP COLUMN phone_number;
