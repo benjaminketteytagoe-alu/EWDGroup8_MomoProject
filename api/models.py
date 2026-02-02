@@ -1,60 +1,47 @@
-# This file defines the database models for the Momo Project using SQLAlchemy ORM.
+from sqlalchemy.sql import func
+from db import db
 
-import os
-import json 
-from flask_sqlalchemy import SQLAlchemy
 
-# database instance
-db = SQLAlchemy()
+# Shared attributes
+class Base:
+    id = db.Column(db.Integer, primary_key=True)
+    created_at = db.Column(db.DateTime, server_default=func.now())
+    updated_at = db.Column(
+        db.DateTime,
+        server_default=func.now(),
+        onupdate=func.now()
+    )
 
-# Base directory
-basedir = os.path.abspath(os.path.dirname(__file__))
 
-# Configure the database 
-class Config:
-    SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://group8:eLeKcEaFiN_2026!@localhost:3306/momo_erd'  
-    SQLALCHEMY_TRACK_MODIFICATIONS = False 
+# users entity schema
+class Users(Base, db.Model):
+    __tablename__ = "users"
 
-#JSON file
-JSON_FILE = os.path.join(basedir, 'all_transactions.json')
-
-def load_transactions_from_json():
-    if not os.path.exists(JSON_FILE):
-        return []
-    try:
-        with open(JSON_FILE, 'r') as file:
-            data = json.load(file)
-            return data.get('transactions', [])
-    except json.JSONDecodeError:
-        return []
-
-# Define database models
-
-class User(db.Model):
-    __tablename__ = "Users"
-    user_id = db.Column(db.Integer, primary_key=True)
     full_name = db.Column(db.String(100), nullable=False)
     phone_number = db.Column(db.String(15), unique=True, nullable=False)
-    balance = db.Column(db.Numeric(15,2), default=0.00)
+    balance = db.Column(db.Numeric(15, 2), default=0.0)
 
 
-class TransactionCategory(db.Model):
-    __tablename__ = "Transaction_Categories"
-    category_id = db.Column(db.Integer, primary_key=True)
-    category_name = db.Column(db.String(50), unique=True, nullable=False)
+# transactions_category entity schema
+class TransactionCategory(Base, db.Model):
+    __tablename__ = "transaction_category"
+
+    category_name = db.Column(db.String(50))
     sub_type = db.Column(db.String(50))
     description = db.Column(db.Text)
 
 
-class Transaction(db.Model):
-    __tablename__ = "Transactions"
-    transaction_id = db.Column(db.Integer, primary_key=True)
-    category_id = db.Column(db.Integer, db.ForeignKey("Transaction_Categories.category_id"))
+# transactions entity schema
+class Transactions(db.Model):
+    __tablename__ = "transactions"
+
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey(
+        'users.user_id'), nullable=False)
+    category_id = db.Column(db.Integer, nullable=False)
     transaction_type = db.Column(db.String(50))
     recepient_sender = db.Column(db.String(100))
-    amount = db.Column(db.Numeric(15,2))
-    fee = db.Column(db.Numeric(10,2))
-    new_balance = db.Column(db.Numeric(15,2))
-    date = db.Column(db.String(50))
-
-    
+    amount = db.Column(db.Numeric(15, 2), nullable=False)
+    fee = db.Column(db.Numeric(10, 2), default=0.00)
+    new_balance = db.Column(db.Numeric(15, 2))
+    date = db.Column(db.DateTime, server_default=func.now())
