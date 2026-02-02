@@ -37,7 +37,7 @@ class Transactions(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey(
-        'users.user_id'), nullable=False)
+        'users.id'), nullable=False)
     category_id = db.Column(db.Integer, nullable=False)
     transaction_type = db.Column(db.String(50))
     recepient_sender = db.Column(db.String(100))

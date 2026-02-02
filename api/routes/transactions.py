@@ -77,7 +77,7 @@ def create_transaction():
 
 
 # Update transaction
-@transactions_bp.route("/transactions/<int:id>")
+@transactions_bp.route("/transactions/<int:id>", methods=["PUT"])
 def update_transaction(id):
     transaction = Transactions.query.get_or_404(id)
     data = request.get_json()
