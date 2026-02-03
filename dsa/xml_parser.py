@@ -1,23 +1,13 @@
 import re
 import xml.etree.ElementTree as ET
-# import csv
 import json
 import os
 from datetime import datetime
 
 
 xml_file = 'momo_sms.xml'
-DIR = 'momo_transactions'
+# DIR = 'momo_transactions'
 file_path = xml_file
-# storage_files = {
-#     'MONEY_TRANSFER': 'money_transfers.csv',
-#     'CASH_MANAGEMENT': 'cash_management.csv',
-#     'PAYMENTS': 'payments.csv',
-#     'FINANCIAL_SERVICES': 'financial_services.csv',
-#     'OTHER_SERVICES': 'other_services.csv',
-#     'UNKNOWN': 'unknown_transactions.csv'
-# }
-# csv_columns = ['date', 'transaction_type', 'sub_type', 'amount', 'fee', 'new_balance', 'recepient_sender', 'phone_number', 'transaction_id', 'description', 'full_message']
 
 m_transfers = [
     {
@@ -26,7 +16,7 @@ m_transfers = [
     },
     {
         'name' : 'receiving p2p',
-        'pattern' : re.compile(r'You have received (\d+)\s*RWF from (.+?)\s*\(\*+(\d+)\).*?Your new balance:(\d+)\s*RWF.*?Financial Transaction Id:\s*(\d+)')
+        'pattern' : re.compile(r'You have received (\d+)\s*RWF from (.+?)\s*\(([\*\d]+)\).*?Your new balance:(\d+)\s*RWF.*?Financial Transaction Id:\s*(\d+)')
     }
 ]
 
@@ -163,21 +153,20 @@ def extract_amount(amnt_str):
 def extract_number(text):
     if not text:
         return None
-    phone_pattern = r'\((\d{12})\)'
+    
+    phone_pattern = r'\(([\*\d]+)\)'
     match = re.search(phone_pattern, text)
+    
     if match:
         return match.group(1)
-    x_phone = r'\(\*+(\d+)\)'
-    match = re.search(x_phone, text)
-    if match:
-        return match.group(1)
+        
     return None
 
 def extract_transaction_id(text):
     if not text:
         return None
-    txid_pattern = r'TxId:\s*(\d+)'
-    match = re.search(txid_pattern, text)
+    txid_pattern = r'(?:TxId\s*[:*]\s*|Financial Transaction Id\s*:\s*)(\d+)'
+    match = re.search(txid_pattern, text, re.IGNORECASE)
     if match:
         return match.group(1)
     return None
@@ -205,19 +194,12 @@ def extract_recipient_sender(text):
     return None
 
 
-
-
-
 def main():
     print("\n" + "="*40)
     print("MTN MOBILE MONEY TRANSACTION PARSER")
     print("="*40 + "\n")
     
     counts = {}
-
-    if not os.path.exists(DIR):
-        os.makedirs(DIR)
-    
     
     sms_list = parse_xml_file(file_path)
     
@@ -226,16 +208,8 @@ def main():
         return
     
     
-    # csv_files = {}
-    # csv_writers = {}
-    all_transactions = []
     
-    # for category, filename in storage_files.items():
-    #     filepath = os.path.join(DIR, filename)
-    #     csv_files[category] = open(filepath, 'w', newline='', encoding='utf-8')
-    #     csv_writers[category] = csv.DictWriter(csv_files[category], fieldnames=csv_columns)
-    #     csv_writers[category].writeheader()
-
+    all_transactions = []
     
     
     
@@ -249,17 +223,15 @@ def main():
         counts[category] += 1
 
         transaction = {
-            'date': sms['readable_date'],
+            'date': extract_timestamp(sms['date']),
             'transaction_type': category,
             'sub_type': sub_type or 'Unknown',
             'amount': 0,
             'fee': 0,
             'new_balance': 0,
             'recepient_sender': '',
-            'phone_number': '',
-            'transaction_id': '',
-            'description': sub_type or category,
-            'full_message': sms['body']
+            'phone_number': extract_number(sms['body']),
+            'transaction_id': extract_transaction_id(sms['body'])
         }
         
         
@@ -303,33 +275,57 @@ def main():
                 transaction['amount'] = extract_amount(groups[1])
                 transaction['new_balance'] = extract_amount(groups[2])
                 transaction['recepient_sender'] = 'Airtime'
-            
+
+            elif sub_type == 'water':
+                transaction['amount'] = extract_amount(groups[0])
+                transaction['description'] = f"Bill: {groups[1]}"
+                transaction['new_balance'] = extract_amount(groups[2])
+                transaction['recepient_sender'] = 'WASAC'
+
             elif sub_type == 'electricity':
                 transaction['amount'] = extract_amount(groups[0])
                 transaction['description'] = f"Token: {groups[1]}"
                 transaction['new_balance'] = extract_amount(groups[2])
                 transaction['recepient_sender'] = 'MTN Cash Power'
+
+            elif 'bank transfer' in sub_type:
+                transaction['amount'] = extract_amount(groups[0])
+                transaction['recepient_sender'] = groups[1].strip()
+                transaction['new_balance'] = extract_amount(groups[2])
+
+            elif 'loan' in sub_type or sub_type == 'savings transfer':
+                transaction['amount'] = extract_amount(groups[0])
+                transaction['new_balance'] = extract_amount(groups[1])
+                transaction['recepient_sender'] = 'MoKash'
+
+            elif sub_type in ['bulk payment received', 'salary payment']:
+                transaction['recepient_sender'] = groups[0].strip()
+                transaction['amount'] = extract_amount(groups[1])
+                transaction['description'] = groups[2]
+                transaction['new_balance'] = extract_amount(groups[3])
+
+            elif sub_type == 'virtual card funding':
+                transaction['amount'] = extract_amount(groups[0])
+                transaction['new_balance'] = extract_amount(groups[1])
+                transaction['recepient_sender'] = 'Virtual Card'
+
+        if not transaction['transaction_id']:
+            transaction['transaction_id'] = extract_transaction_id(sms['body'])
+            
+        if not transaction['phone_number']:
+            transaction['phone_number'] = extract_number(sms['body'])
         
         
-        # csv_writers[category].writerow(transaction)
         all_transactions.append(transaction)
     
-    path = os.path.join(DIR, 'all_transactions.json')
+    path = os.path.join('all_transactions.json')
     with open(path, 'w', encoding='utf-8') as jsonfile:
         json.dump(all_transactions, jsonfile, ensure_ascii=False, indent=4)
 
 
-
-
-    # for f in csv_files.values():
-    #     f.close()
-
-    # print("\nTransaction Summary:")
-    # for cat, total in counts.items():
-    #     print(f"- {cat}: {total}")
    
     print("="*40)
-    print("completed. Files saved in:", DIR)
+    print("completed. transactions saved in: all_transactions.json")
     print("="*40 + "\n")
 
 if __name__ == '__main__':
