@@ -1,12 +1,14 @@
 from flask import Blueprint, jsonify, request
 from models import Transactions, db
 from sqlalchemy.sql import func
+from auth import auth
 
 transactions_bp = Blueprint("transactions", __name__)
 
 
 # Read all transactions
 @transactions_bp.route("/transactions")
+@auth.login_required
 def get_transactions():
     transactions = Transactions.query.all()
 
@@ -27,6 +29,7 @@ def get_transactions():
 
 # Read transaction by id
 @transactions_bp.route("/transactions/<int:id>")
+@auth.login_required
 def get_transaction(id):
     transaction = Transactions.query.get_or_404(id)
 
@@ -44,6 +47,7 @@ def get_transaction(id):
 
 # Post transaction
 @transactions_bp.route("/transactions", methods=["POST"])
+@auth.login_required
 def create_transaction():
     data = request.get_json()
     required_fields = ["user_id", "category_id", "recepient_sender", "amount"]
@@ -78,6 +82,7 @@ def create_transaction():
 
 # Update transaction
 @transactions_bp.route("/transactions/<int:id>", methods=["PUT"])
+@auth.login_required
 def update_transaction(id):
     transaction = Transactions.query.get_or_404(id)
     data = request.get_json()
@@ -122,6 +127,7 @@ def update_transaction(id):
 
 # Delete a transaction by id
 @transactions_bp.route("/transactions/<int:id>", methods=["DELETE"])
+@auth.login_required
 def rm_transaction(id):
     transaction = Transactions.query.get_or_404(id)
 
