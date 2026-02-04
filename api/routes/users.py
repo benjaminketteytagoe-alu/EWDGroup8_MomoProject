@@ -1,5 +1,6 @@
 from flask import Blueprint, jsonify, request
 from models import Users, db
+from auth import auth
 
 user_bp = Blueprint("users", __name__)
 
@@ -7,6 +8,7 @@ user_bp = Blueprint("users", __name__)
 # READ ALL USERS
 
 @user_bp.route("/users")
+@auth.login_required
 def get_users():
     users = Users.query.all()
 
@@ -26,6 +28,7 @@ def get_users():
 # GET USER BY ID
 
 @user_bp.route("/users/<int:id>")
+@auth.login_required
 def get_user(id):
     user = Users.query.get_or_404(id)
 
@@ -42,6 +45,7 @@ def get_user(id):
 
 
 @user_bp.route("/users", methods=["POST"])
+@auth.login_required
 def create_user():
     data = request.get_json()
 
@@ -71,6 +75,7 @@ def create_user():
 # UPDATE EXISTING USER
 
 @user_bp.route("/users/<int:id>", methods=["PUT"])
+@auth.login_required
 def update_user(id):
     user = Users.query.get_or_404(id)
     data = request.get_json()
@@ -95,6 +100,7 @@ def update_user(id):
 # DELETE EXISTING USER
 
 @user_bp.route("/users/<int:id>", methods=["DELETE"])
+@auth.login_required
 def rm_user(id):
     user = Users.query.get_or_404(id)
 
