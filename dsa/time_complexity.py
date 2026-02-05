@@ -33,36 +33,47 @@ def main():
            "60173686359", "92109248895", "91472495825", "67819295386", "85850951309",
            "81424789154", "82008869453", "49470186297", "41885909187", "47955567230"]
 
-    # Linear search for 20 transactions
+    # Linear and dictionary search table 
+       
+    print("Searching.. Time taken is in micro seconds (µs)")
+    print("===================================================================")
+    print("ID                 Linear Search Time      Dictionary Search Time")
+    print("===================================================================")
+
     found = 0
     not_found = []
-    start_linear = time.perf_counter()
+    l_time = []
+    d_time = []
+
     for id in ids:
+        # Linear search through IDs with time recorded in micro seconds
+        start_linear = time.perf_counter()
         search = linear_search(trans_list= trans_list, id= id)
-        if search:
+        stop_linear = time.perf_counter() - start_linear
+        l_time.append(stop_linear * 1_000_000)
+        
+        # Dict search for through IDs with time recorded in micro seconds
+        d_start = time.perf_counter()
+        srch = dict_search(id= id)
+        d_stop = time.perf_counter() - d_start
+        d_time.append(d_stop * 1_000_000)
+
+        # accounting for IDs that are found and not found during the search    
+        if srch and search:
             found += 1
         else:
-            not_found.append(id)
-    stop_linear = time.perf_counter() - start_linear
-    print(f"Linear search for {len(ids)} transactions took an average of: {stop_linear/len(ids):.10f} seconds")
-    print(f"We found: {found}, but didn't find: {len(not_found)}:")
-    print(not_found)
+            not_found.append(id)          
+        print(f"{id}          {stop_linear * 1_000_000:8.2f} µs             {d_stop * 1_000_000:8.2f} µs")
+    print(f"Found {found} / {len(ids)}. Not found: {not_found}")    
+    
+    # summary section 
+    l_average = sum(l_time) / len(l_time)
+    d_average = sum(d_time) / len(d_time)
+    print("=========================================")
+    print(f"Average Linear Search Time: {l_average:.2f} µs")
+    print(f"Average Dictionary Search Time: {d_average:.2f} µs")
+    print("=========================================")
 
-    # Dictionary search for 20 transactions
-    FOUND = 0
-    NOT_FOUND = []
-    start = time.perf_counter()
-    for id in ids:
-        srch = dict_search(id= id)
-        if srch:
-            FOUND += 1
-        else:
-            NOT_FOUND.append(id)
-    stop = time.perf_counter() - start
-    print(f"Dictionary search for {len(ids)} searches took an average of: {stop/len(ids):.10f} seconds")
-    print(f"Dictionary search found: {FOUND}, but didn't find: {len(NOT_FOUND)}:")
-    print(NOT_FOUND)
 
 if __name__ == "__main__":
     main()
-
