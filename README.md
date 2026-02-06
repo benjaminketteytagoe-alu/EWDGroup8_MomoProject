@@ -1,5 +1,29 @@
 # EWDGroup8 – MoMo SMS Database Design & Data Processing System
 
+## 📑 Table of Contents
+
+1. [Project Overview](#-project-overview)
+2. [Learning Objectives Alignment](#-learning-objectives-alignment)
+3. [Entity Relationship Diagram (ERD)](#-entity-relationship-diagram-erd)
+   - [Core Entities Implemented](#core-entities-implemented)
+   - [ERD Design Highlights](#erd-design-highlights)
+   - [Overall Project Architecture](#overall-project-architecture)
+4. [SQL Database Implementation (MySQL)](#sql-database-implementation-mysql)
+   - [Database Features](#database-features)
+   - [Implementation File](#implementation-file)
+   - [SQL Components Included](#sql-components-included)
+5. [JSON Data Modeling & Serialization](#-json-data-modeling--serialization)
+   - [Included JSON Examples](#included-json-examples)
+   - [Key Strengths](#key-strengths)
+6. [Repository Structure](#-repository-structure-rubric-aligned)
+7. [Team Collaboration & Contributions](#-team-collaboration--contributions)
+8. [Scrum & Project Management](#-scrum--project-management)
+9. [Database Design Document (PDF)](#-database-design-document-pdf)
+10. [AI Usage Policy Compliance](#-ai-usage-policy-compliance)
+11. [License](#-license)
+
+---
+
 ## 📌 Project Overview
 
 The **MoMo SMS Database Design Project** focuses on designing and implementing a **robust, scalable relational database** for processing Mobile Money (MoMo) transaction data extracted from SMS/XML records. This phase emphasizes **database modeling, integrity enforcement, structured serialization, and collaborative engineering practices**.
@@ -45,6 +69,9 @@ This project explicitly addresses the following learning outcomes:
 * Accurate relationship cardinality (1:1, 1:M, M:N)
 * Proper resolution of M:N relationships via junction tables
 * Designed using a professional diagramming tool (Draw.io)
+
+### Overall Project Architecture
+**EWDGroup8_MomoProject** - [Miro link](https://miro.com/app/live-embed/uXjVGS77-ss=/?embedMode=view_only_without_ui&moveToViewport=-2336%2C-962%2C9027%2C5263&embedId=871724349883)
 
 📁 **Location:**
 
@@ -148,8 +175,7 @@ examples/json_schemas.json
 | **Alek**     | Architecture / Documentation       | ERD consistency checks, JSON modeling support, documentation structure                                          |
 | **Prince**   | Architecture / Documentation       | SQL-to-JSON mapping review, documentation refinement, architecture alignment                                    |
 
-> ⚠️ **Assessment Note:**
-> Coding contributions are evidenced **strictly through GitHub commits** in database and schema-related files, as required by the grading policy.
+
 
 ---
 
@@ -160,7 +186,11 @@ examples/json_schemas.json
 * Clear ownership and sprint progression
 
 🔗 **Scrum Board Link:** [Trello Link](https://trello.com/b/ayd4HWIa/enterprise-momo-data-system)
-
+---
+**Database set-up - Team task sheet:** [Team Sheet Week 1](https://docs.google.com/spreadsheets/d/1pLqAZHWq_aOthOz3-OGXTW5T2kNAta_HwkuL4k555s4/edit?usp=sharing)
+---
+---
+**REST API set-up - Team task sheet:** [Team Sheet Week 2](https://docs.google.com/spreadsheets/d/1-vjkeSLSdbb2df2L4AW_BbHfsWWAAuI2fukOLLNA-_o/edit?usp=sharing)
 ---
 
 ## 📄 Database Design Document (PDF)
@@ -198,6 +228,3 @@ docs/database_design.pdf
 ## 📜 License
 
 This project is licensed under the **MIT License**.
-
-
-
