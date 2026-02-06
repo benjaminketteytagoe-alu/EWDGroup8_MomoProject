@@ -21,43 +21,28 @@ CREATE TABLE Users (
 
 -- Transaction Categories table
 CREATE TABLE Transaction_Categories (
-    category_id INT AUTO_INCREMENT PRIMARY KEY COMMENT 'UNIQUE id for the category types',
-    category_name VARCHAR(50) NOT NULL UNIQUE COMMENT 'name of category type', 
-    sub_type ENUM('Money Transfer','Cash Management','Payments','Financial Services','Other Services','Unknown') NOT NULL COMMENT 'sub transaction types'
-    -- parent_group ENUM('Money Transfer','Cash Management','Payments','Financial Services','Other Services','Unknown') NOT NULL COMMENT 'major transaction types',
-    description TEXT COMMENT 'category description',
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT 'date create',
-    CONSTRAINT chk_category_name_length CHECK (LENGTH(category_name) >= 3),
-    INDEX idx_category_name (category_name),
-    INDEX idx_parent_group (parent_group)
-) COMMENT 'Table for all category types and parent groups';
+    category_id INT AUTO_INCREMENT PRIMARY KEY,
+    category_name VARCHAR(50) NOT NULL UNIQUE, 
+    sub_type ENUM('Money Transfer','Cash Management','Payments','Financial Services','Other Services','Unknown') NOT NULL,
+    description TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
 
 -- Transactions table
 CREATE TABLE Transactions (
-    transaction_id INT AUTO_INCREMENT PRIMARY KEY COMMENT 'unique ids for each transaction',
-    user_id INT NOT NULL COMMENT 'User ID from Users table',
-    category_id INT NOT NULL COMMENT 'transaction category',
-    transaction_type VARCHAR(50) NOT NULL COMMENT 'type of transaction',
-    -- transaction_reference VARCHAR(50) NOT NULL COMMENT 'reference fetched from momo',
-    recepient_sender VARCHAR(100) NOT NULL COMMENT 'Party involved in the transaction',
-    amount DECIMAL(15, 2) NOT NULL COMMENT 'Transaction amount',
-    fee DECIMAL(10, 2) DEFAULT 0.00 COMMENT 'fee charged',
-    new_balance DECIMAL(15, 2) NOT NULL COMMENT 'balance after transaction',
-    -- balance_before DECIMAL(15, 2) COMMENT 'balance before the transaction',
-    -- balance_after DECIMAL(15, 2) NOT NULL COMMENT 'balance after transaction',
-    -- transaction_date DATETIME NOT NULL COMMENT 'When transaction occurred',
-    date TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT 'When record was created',
-    FOREIGN KEY (user_id) REFERENCES Users(user_id) ON DELETE CASCADE,
-    FOREIGN KEY (category_id) REFERENCES Transaction_Categories(category_id) ON DELETE RESTRICT,
-    CONSTRAINT chk_amount CHECK (amount > 0),
-    CONSTRAINT chk_fee CHECK (fee >= 0),
-    INDEX idx_user_transactions (user_id, transaction_date),
-    INDEX idx_category (category_id),
-    INDEX idx_recepient_sender (recepient_sender),
-    -- INDEX idx_reference (transaction_reference),
-    -- INDEX idx_date (transaction_date)
-) COMMENT 'Table for all transaction records';
-
+    id INT AUTO_INCREMENT PRIMARY KEY,             
+    momo_reference VARCHAR(50) NULL,               
+    user_id INT NOT NULL,
+    category_id INT NOT NULL,
+    transaction_type VARCHAR(50) NOT NULL,
+    recepient_sender VARCHAR(100) NOT NULL,
+    amount DECIMAL(15, 2) NOT NULL,
+    fee DECIMAL(10, 2) DEFAULT 0.00,
+    new_balance DECIMAL(15, 2) NOT NULL,
+    date DATETIME NOT NULL,                         
+    FOREIGN KEY (user_id) REFERENCES Users(user_id),
+    FOREIGN KEY (category_id) REFERENCES Transaction_Categories(category_id)
+) COMMENT 'Table for transactions';
 -- Transaction Statements table
 CREATE TABLE Transaction_Statements (
     statement_id INT AUTO_INCREMENT PRIMARY KEY COMMENT 'Unique id for requested statements',
@@ -88,23 +73,22 @@ CREATE TABLE System_Logs (
 ) COMMENT 'Logs user activities and system events';
 
 -- Populating fixed transaction types
-INSERT INTO Transaction_Categories (category_name, parent_group, description), created_at) VALUES
+INSERT INTO Transaction_Categories (category_name, sub_type, description, created_at) VALUES
 ('Sending p2p', 'Money Transfer', 'Person-to-person money sent', NOW()),
 ('Receiving p2p', 'Money Transfer', 'Person-to-person money received', NOW()),
 ('Deposit', 'Cash Management', 'Depositing cash at the agent', NOW()),
 ('Withdrawal', 'Cash Management', 'Withdrawing cash at the agent', NOW()),
 ('Code Payment', 'Payments', 'Payment to registered merchant', NOW()),
-('Merchant Payment', 'Payments', 'Payment to unregistered merchant', NOW()),
 ('Airtime', 'Payments', 'Mobile airtime/data purchase', NOW()),
 ('Water bill', 'Payments', 'Water bill payment', NOW()),
 ('Electricity bill', 'Payments', 'Electricity bill payment', NOW()),
-('Other bills', 'Payments', 'Other utility bills payment', NOW()),  
+('Bank to moMo', 'Financial Services', 'Transfer from bank to MoMo', NOW()),
 ('MoMo to bank', 'Financial Services', 'Transfer from MoMo to bank account', NOW()),
-('Bank to moMo', 'Financial Services', 'Transfer from bank to MoMo'),
-('Loan request', 'Financial Services', 'Loan received'),
-('Loan repayment', 'Financial Services', 'Loan payment made'),
-('Savings transfer', 'Financial Services', 'Transfer to savings account'),
-('Virtual Card Funding', 'Other Services', 'Loading virtual card'),
-('Bulk Payment Received', 'Other Services', 'Bulk payment from organization'),
-('Salary Payment', 'Other Services', 'Salary received'),
-('Unknown Transaction', 'Unknown', 'Transaction type could not be determined');
+('Loan request', 'Financial Services', 'Loan received', NOW()),
+('Loan repayment', 'Financial Services', 'Loan payment made', NOW()),
+('Savings transfer', 'Financial Services', 'Transfer to savings account', NOW()),
+('Virtual Card Funding', 'Other Services', 'Loading virtual card', NOW()),
+('Bulk Payment Received', 'Other Services', 'Bulk payment from organization', NOW()),
+('Salary Payment', 'Other Services', 'Salary received', NOW()),
+('Reversal', 'Financial Services', 'Transaction reversed', NOW()), 
+('Unknown Transaction', 'Unknown', 'Undetermined type', NOW());
