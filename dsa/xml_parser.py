@@ -11,11 +11,11 @@ file_path = xml_file
 #patterns for money transfers
 m_transfers = [
     {
-        'name' : 'sending p2p',
+        'name' : 'Sending p2p',
         'pattern' : re.compile(r'\*165\*S\*([\d,]+)\s*RWF transferred to (.+?)\s*\((\d+)\).*?Fee was:\s*([\d,]+)\s*RWF.*?New balance:\s*([\d,]+)\s*RWF', re.I)
     },
     {
-        'name' : 'receiving p2p',
+        'name' : 'Receiving p2p',
         'pattern' : re.compile(r'You have received ([\d,]+)\s*RWF from (.+?)\s*\(([\*\d]+)\).*?Your new balance:?\s*([\d,]+)\s*RWF.*?Financial Transaction Id:\s*(\d+)', re.I)
     }
 ]
@@ -23,35 +23,35 @@ m_transfers = [
 #patterns for cash management. Only for physical cash to momo or the other way round
 cash_mngt = [
     {
-        'name' : 'deposit', #physical cash in
+        'name' : 'Deposit', #physical cash in
         'pattern' : re.compile(r'You have received ([\d,]+)\s*RWF from.*?Cash Deposit.*?new balance:\s*([\d,]+)\s*RWF', re.I)
     },
     {
-        'name' : 'withdrawal', #physical cash out
-        'pattern' : re.compile(r'withdrawn ([\d,]+)\s*RWF.*?new balance:\s*([\d,]+)\s*RWF.*?Fee paid:\s*([\d,]+)\s*RWF.*?Financial Transaction Id:\s*(\d+)', re.I)
+        'name' : 'Withdrawal', #physical cash out
+        'pattern' : re.compile(r'(?:withdrawn|amount)\s*([\d,]+)\s*RWF.*?new balance:\s*([\d,]+)\s*RWF.*?Fee paid:\s*([\d,]+)\s*RWF', re.I)
     }
 ]
 
 #patterns for bills, airtime, and merchant payments
 payments = [
     {
-        'name' : 'Merchants, the guys with code',
-        'pattern' : re.compile(r'(?:TxId:\s*(\d+)\.\s*Your payment of|Your payment of|[\*]164[\*]S[\*]Y\'ello,A transaction of)\s*([\d,]+)\s*RWF (?:to|by)\s+(.+?)\s+(?:(\d+)\s+has been completed|on your MOMO account)', re.I)
+        'name' : 'Code Payment',
+        'pattern' : re.compile(r'(?:TxId:\s*(\d+)\.\s*Your payment of|[\*]164[\*]S[\*]Y\'ello,A transaction of)\s*([\d,]+)\s*RWF (?:to|by)\s+(.+?)\s+(?:(\d+)\s+has been completed|on your MOMO account).*?new balance:\s*([\d,]+)\s*RWF(?:\.\s*Fee was\s*([\d,]+))?', re.I)
     },
     {
         'name' : 'Bundles and Packs',
-        'pattern' : re.compile(r'\*162\*TxId:(\d+)\*S\*Your payment of ([\d,]+)\s*RWF to Bundles and Packs.*?new balance:\s*([\d,]+)\s*RWF', re.I)
+        'pattern' : re.compile(r'TxId[:\s*]*(\d+).*?payment of\s*([\d,]+)\s*RWF to\s*(.*?)\s*has been.*?new balance:\s*([\d,]+)'r'|'r'Umaze kugura\s*(.*?)\s*igura\s*([\d,]+)\s*(?:RWF|FRW)', re.I)
     },
     {
         'name' : 'Airtime',
         'pattern' : re.compile(r'\*162\*TxId:(\d+)\*S\*Your payment of ([\d,]+)\s*RWF to Airtime.*?new balance:\s*([\d,]+)\s*RWF', re.I)
     },
     {
-        'name' : 'water',
+        'name' : 'Water bill',
         'pattern' : re.compile(r'(?:You paid|Your payment of)\s*([\d,]+)\s*RWF for (?:WASAC|water).*?bill number\s*([\w-]+).*?new balance:\s*([\d,]+)\s*RWF', re.I)
     },
     {
-        'name' : 'electricity',
+        'name' : 'Electricity bill',
         'pattern' : re.compile(r'Your payment of ([\d,]+)\s*RWF to MTN Cash Power with token ([\d-]+).*?new balance:\s*([\d,]+)\s*RWF', re.I)
     }
 ]
@@ -59,27 +59,27 @@ payments = [
 #transactions between bank and momo accounts
 financial_srvcs = [
     {
-        'name' : 'bank transfer from bank', 
+        'name' : 'Bank to moMo', 
         'pattern' : re.compile(r'\*113\*R\*A (bank) deposit of ([\d,]+)\s*RWF.*?NEW BALANCE\s*:\s*([\d,]+)\s*RWF', re.I)
     },
     {
-        'name': 'reversal',
+        'name': 'Reversal',
         'pattern': re.compile(r'Your transaction to (.*?)\s*\((\d+)\) with ([\d,]+)\s*RWF has been reversed.*?new balance is ([\d,]+)\s*RWF', re.I)
     },
     {
-        'name': 'bank transfer to bank',
+        'name': 'Momo to bank',
         'pattern': re.compile(r'You have transferred ([\d,]+)\s*RWF to your (.+?)\s+(?:bank\s+)?account.*?new balance:\s*([\d,]+)\s*RWF', re.I)
     },
     {
-        'name': 'loan request',
+        'name': 'Loan request',
         'pattern': re.compile(r'Your loan request of ([\d,]+)\s*RWF has been credited.*?new balance:\s*([\d,]+)\s*RWF', re.I)
     },
     {
-        'name': 'loan repayment',
+        'name': 'Loan repayment',
         'pattern': re.compile(r'You have repaid your MoKash loan of ([\d,]+)\s*RWF.*?new balance:\s*([\d,]+)\s*RWF', re.I)
     },
     {
-        'name': 'savings transfer',
+        'name': 'Savings transfer',
         'pattern': re.compile(r'You have transferred ([\d,]+)\s*RWF to your MoKash savings account.*?new balance:\s*([\d,]+)\s*RWF', re.I)
     }
 ]
@@ -87,15 +87,15 @@ financial_srvcs = [
 #other trans: salary,virtual cards
 other_services = [
     {
-        'name': 'virtual card funding',
+        'name': 'Virtual Card Funding',
         'pattern': re.compile(r'You have funded your Virtual Card by MoMo with ([\d,]+)\s*RWF.*?new balance:\s*([\d,]+)\s*RWF', re.I)
     },
     {
-        'name': 'bulk payment received',
+        'name': 'Bulk Payment Received',
         'pattern': re.compile(r'(.+?)\s+has paid you ([\d,]+)\s*RWF for (.+?)\..*?new balance:\s*([\d,]+)\s*RWF', re.I)
     },
     {
-        'name': 'salary payment',
+        'name': 'Salary Payment',
         'pattern': re.compile(r'(.+?)\s+has paid you ([\d,]+)\s*RWF for salary.*?new balance:\s*([\d,]+)\s*RWF', re.I)
     }
 ]
@@ -234,37 +234,36 @@ def main():
         if match and sub_type:
             groups = match.groups()
             
-            if sub_type == 'sending p2p':
+            if sub_type == 'Sending p2p':
                 transaction['amount'] = extract_amount(groups[0])
                 transaction['recepient_sender'] = groups[1].strip()
                 transaction['phone_number'] = groups[2]
                 transaction['fee'] = extract_amount(groups[3])
                 transaction['new_balance'] = extract_amount(groups[4])
             
-            elif sub_type == 'receiving p2p':
+            elif sub_type == 'Receiving p2p':
                 transaction['amount'] = extract_amount(groups[0])
                 transaction['recepient_sender'] = groups[1].strip()
                 transaction['phone_number'] = groups[2]
                 transaction['new_balance'] = extract_amount(groups[3])
                 transaction['transaction_id'] = groups[4]
             
-            elif sub_type == 'deposit':
+            elif sub_type == 'Deposit':
                 transaction['amount'] = extract_amount(groups[0])
                 transaction['new_balance'] = extract_amount(groups[1])
             
-            elif sub_type == 'withdrawal':
+            elif sub_type == 'Withdrawal':
                 transaction['amount'] = extract_amount(groups[0])
                 transaction['new_balance'] = extract_amount(groups[1])
                 transaction['fee'] = extract_amount(groups[2])
-                transaction['transaction_id'] = groups[3]
             
-            elif sub_type == 'Merchants, the guys with code':
-                if groups[0] and groups[0].isdigit() and len(groups[0]) > 6:
-                    transaction['transaction_id'] = groups[0]
-                
+            elif sub_type == 'Code Payment':
+                transaction['transaction_id'] = groups[0] if groups[0] else None
                 transaction['amount'] = extract_amount(groups[1])
                 transaction['recepient_sender'] = groups[2].strip()
-                transaction['phone_number'] = groups[3]
+                transaction['phone_number'] = groups[3] if groups[3] else None
+                transaction['new_balance'] = extract_amount(groups[4])
+                transaction['fee'] = extract_amount(groups[5]) if groups[5] else 0
             
             elif sub_type == 'Airtime':
                 transaction['transaction_id'] = groups[0]
@@ -273,25 +272,30 @@ def main():
                 transaction['recepient_sender'] = 'Airtime'
 
             elif sub_type == 'Bundles and Packs':
-                transaction['transaction_id'] = groups[0]
-                transaction['amount'] = extract_amount(groups[1])
-                transaction['new_balance'] = extract_amount(groups[2])
-                transaction['recepient_sender'] = 'MTN Bundles'
+                if groups[0]:
+                    transaction['transaction_id'] = groups[0]
+                    transaction['amount'] = extract_amount(groups[1])
+                    transaction['recepient_sender'] = groups[2].strip()
+                    transaction['new_balance'] = extract_amount(groups[3])
+                else: 
+                    transaction['recepient_sender'] = groups[4].strip() 
+                    transaction['amount'] = extract_amount(groups[5]) 
+                    transaction['new_balance'] = 0 
 
-            elif sub_type == 'water':
+            elif sub_type == 'Water bill':
                 transaction['amount'] = extract_amount(groups[0])
                 transaction['description'] = f"Bill: {groups[1]}"
                 transaction['new_balance'] = extract_amount(groups[2])
                 transaction['recepient_sender'] = 'WASAC'
 
-            elif sub_type == 'electricity':
+            elif sub_type == 'Electricity bill':
                 transaction['amount'] = extract_amount(groups[0])
                 transaction['description'] = f"Token: {groups[1]}"
                 transaction['new_balance'] = extract_amount(groups[2])
                 transaction['recepient_sender'] = 'MTN Cash Power'
 
-            elif 'bank transfer' in sub_type:
-                if sub_type == 'bank transfer from bank':
+            elif sub_type in ['Bank to moMo', 'Momo to bank']:
+                if sub_type == 'Bank to moMo':
                     transaction['recepient_sender'] = groups[0].strip() 
                     transaction['amount'] = extract_amount(groups[1]) 
                     transaction['new_balance'] = extract_amount(groups[2])
@@ -300,24 +304,24 @@ def main():
                     transaction['recepient_sender'] = groups[1].strip()
                     transaction['new_balance'] = extract_amount(groups[2])
             
-            elif sub_type == 'reversal':
+            elif sub_type == 'Reversal':
                 transaction['recepient_sender'] = groups[0].strip()
                 transaction['phone_number'] = groups[1]
                 transaction['amount'] = extract_amount(groups[2])
                 transaction['new_balance'] = extract_amount(groups[3])
 
-            elif 'loan' in sub_type or sub_type == 'savings transfer':
+            elif sub_type in ['Loan request', 'Loan repayment', 'Savings transfer']:
                 transaction['amount'] = extract_amount(groups[0])
                 transaction['new_balance'] = extract_amount(groups[1])
                 transaction['recepient_sender'] = 'MoKash'
 
-            elif sub_type in ['bulk payment received', 'salary payment']:
+            elif sub_type in ['Bulk Payment Received', 'Salary Payment']:
                 transaction['recepient_sender'] = groups[0].strip()
                 transaction['amount'] = extract_amount(groups[1])
                 transaction['description'] = groups[2] 
                 transaction['new_balance'] = extract_amount(groups[3])
 
-            elif sub_type == 'virtual card funding':
+            elif sub_type == 'Virtual Card Funding':
                 transaction['amount'] = extract_amount(groups[0])
                 transaction['new_balance'] = extract_amount(groups[1])
                 transaction['recepient_sender'] = 'Virtual Card'
