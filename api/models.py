@@ -27,8 +27,16 @@ class TransactionCategory(Base, db.Model):
     __tablename__ = "transaction_category"
 
     category_name = db.Column(db.String(50))
-    sub_type = db.Column(db.String(50))
+    sub_type = db.Column(db.Enum(
+        "money_transfer",
+        "cash_management",
+        "payments",
+        "financial_services",
+        "other_services"
+    ))
     description = db.Column(db.Text)
+
+    transactions = db.relationship("Transactions", back_populates="category")
 
 
 # transactions entity schema
@@ -38,10 +46,14 @@ class Transactions(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey(
         'users.id'), nullable=False)
-    category_id = db.Column(db.Integer, nullable=False)
+    category_id = db.Column(db.Integer, db.ForeignKey(
+        "transaction_category.id"), nullable=False)
     transaction_type = db.Column(db.String(50))
     recepient_sender = db.Column(db.String(100))
     amount = db.Column(db.Numeric(15, 2), nullable=False)
     fee = db.Column(db.Numeric(10, 2), default=0.00)
     new_balance = db.Column(db.Numeric(15, 2))
     date = db.Column(db.DateTime, server_default=func.now())
+
+    category = db.relationship(
+        "TransactionCategory", back_populates="transactions")
